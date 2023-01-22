@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gateway-service
+  namespace: drone-transport
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gateway-service
+  revisionHistoryLimit: 5
+  progressDeadlineSeconds: 300
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: gateway-service
+    spec:
+      containers:
+        - name: gateway-service-container
+          image: mamedovrb/online-shop-gateway-service:0.0.1
+          ports:
+            - containerPort: 8762
+          imagePullPolicy: Always
+          resources:
+            limits:
+              cpu: "1"
+            requests:
+              cpu: "0.5"
+          args:
+            - -cpus
+            - "2"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: gateway-service
+  namespace: drone-transport
+  labels:
+    spring-boot: "true"
+spec:
+  selector:
+    app: gateway-service
+  type: NodePort
+  ports:
+    - port: 8762
+      targetPort: 8762

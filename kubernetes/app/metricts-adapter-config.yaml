@@ -1,0 +1,52 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: metrics-adapter
+  namespace: drone-transport
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: metrics-adapter
+  revisionHistoryLimit: 5
+  progressDeadlineSeconds: 300
+  minReadySeconds: 10
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: metrics-adapter
+    spec:
+      containers:
+        - name: metrics-adapter-container
+          image: mamedovrb/drone-transport-metrics-adapter:0.0.1-SNAPSHOT
+          ports:
+            - containerPort: 8080
+          imagePullPolicy: Never
+          resources:
+            limits:
+              cpu: "1"
+            requests:
+              cpu: "0.5"
+          args:
+            - -cpus
+            - "2"
+
+---
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: metrics-adapter-service
+  namespace: drone-transport
+spec:
+  selector:
+    app: metrics-adapter
+  type: NodePort
+  ports:
+    - port: 8080
+      targetPort: 8080

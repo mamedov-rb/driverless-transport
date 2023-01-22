@@ -1,0 +1,12 @@
+eureka:
+  client:
+    serviceUrl.defaultZone: 'https://discovery-develop.online-shop.com/eureka'
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: 'https://keycloack-develop.online-shop.com/auth/realms/shop-realm'
+  zipkin.base-url: 'https://zipkin-develop.online-shop.com'
+  boot.admin.client.url: 'https://admin-develop.online-shop.com'

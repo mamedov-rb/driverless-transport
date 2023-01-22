@@ -1,0 +1,20 @@
+eureka:
+  client:
+    serviceUrl.defaultZone: 'https://discovery-develop.online-shop.com/eureka'
+
+spring:
+  security:
+    oauth2:
+      client:
+        provider:
+          keycloak:
+            issuer-uri: 'https://keycloack-develop.online-shop.com/auth/realms/shop-realm'
+        registration:
+          keycloak:
+            client-id: shop-client
+            client-secret: 2185762e-6c91-4d11-a240-8ac4fcd598dd
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+            scope: openid, profile
+  zipkin.base-url: 'https://zipkin-develop.online-shop.com'
+  boot.admin.client.url: 'https://admin-develop.online-shop.com'

@@ -1,0 +1,24 @@
+server:
+  port: 9090
+  servlet.encoding:
+    charset: UTF-8
+    force-response: true
+
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/drone_transport
+    username: postgres
+    password: postgres
+    type: com.zaxxer.hikari.HikariDataSource
+    hikari:
+      poolName: HikariCP_SpringBatch
+      autoCommit: false
+      minimumIdle: 4
+      maximumPoolSize: 50
+      maxLifeTime: 120000
+      leakDetectionThreshold: 60000
+      idleTimeout: 60000
+
+logging:
+  config: classpath:log4j2.xml
