@@ -7,7 +7,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/drone_transport
+    url: jdbc:postgresql://localhost:5432/driverless_transport
     username: postgres
     password: postgres
     type: com.zaxxer.hikari.HikariDataSource
@@ -19,6 +19,23 @@ spring:
       maxLifeTime: 120000
       leakDetectionThreshold: 60000
       idleTimeout: 60000
+  jpa:
+    open-in-view: false
 
 logging:
   config: classpath:log4j2.xml
+
+logbook:
+  include:
+    - /api/**
+  exclude:
+    - /actuator/**
+    - /api/admin/**
+    - /swagger-ui/**
+    - /v3/api-docs/**
+    - /webjars/swagger-ui/**
+  filter.enabled: true
+  secure-filter.enabled: true
+  format.style: json
+  strategy: body-only-if-status-at-least
+  minimum-status: 100

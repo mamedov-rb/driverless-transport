@@ -20,6 +20,9 @@
         <Logger name="com.rb.alwaysontheroad.transportservice" level="DEBUG" additivity="false">
             <AppenderRef ref="CONSOLE"/>
         </Logger>
+        <Logger name="org.zalando.logbook.Logbook" level="TRACE" additivity="false">
+            <AppenderRef ref="CONSOLE"/>
+        </Logger>
         <Logger name="org.springframework.cloud.config" level="DEBUG" additivity="false">
             <AppenderRef ref="CONSOLE"/>
         </Logger>

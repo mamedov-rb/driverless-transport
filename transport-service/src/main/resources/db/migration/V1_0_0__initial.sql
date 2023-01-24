@@ -11,7 +11,7 @@ create table public.transport
     created_at    timestamp(6) not null,
     updated_at    timestamp(6) not null,
     created_by    varchar(255) not null,
-    updated_by    varchar(255) not null
+    updated_by    varchar(255)
 );
 
 alter table public.transport

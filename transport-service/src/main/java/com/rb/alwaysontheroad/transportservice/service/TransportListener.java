@@ -10,11 +10,13 @@ public class TransportListener {
 
     @PrePersist
     public void prePersist(Transport transport) {
-        log.debug("Set 'createdBy' field");
+        transport.setCreatedBy("mocked-user");// TODO: 24.01.2023 Add real user from JWT token.
+        log.debug("Set '{}' field, value: '{}'", Transport.Fields.createdBy, transport.getCreatedBy());
     }
 
     @PreUpdate
     public void preUpdate(Transport transport) {
-        log.debug("Set 'updatedBy' field");
+        transport.setUpdatedBy("mocked-user");// TODO: 24.01.2023 Add real user from JWT token.
+        log.debug("Set '{}' field, value: '{}'", Transport.Fields.updatedBy, transport.getUpdatedBy());
     }
 }
