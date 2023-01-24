@@ -1,8 +1,10 @@
 package com.rb.alwaysontheroad.transportservice.data.dto;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.rb.alwaysontheroad.transportservice.data.enums.Status;
 import com.rb.alwaysontheroad.transportservice.data.enums.Type;
 import com.rb.alwaysontheroad.transportservice.rest.validation.Created;
+import com.rb.alwaysontheroad.transportservice.rest.view.Views;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Null;
@@ -21,6 +23,7 @@ import java.util.UUID;
 public class TransportDto {
 
     @Null(groups = {Created.class})
+    @JsonView(value = {Views.Public.class})
     private UUID id;
 
     @NotBlank(groups = {Created.class})

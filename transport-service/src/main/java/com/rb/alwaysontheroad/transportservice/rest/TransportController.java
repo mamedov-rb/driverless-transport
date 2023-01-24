@@ -1,10 +1,12 @@
 package com.rb.alwaysontheroad.transportservice.rest;
 
+import com.fasterxml.jackson.annotation.JsonView;
 import com.rb.alwaysontheroad.transportservice.constants.ApplicationConstants;
 import com.rb.alwaysontheroad.transportservice.converter.TransportMapper;
 import com.rb.alwaysontheroad.transportservice.data.dto.TransportDto;
 import com.rb.alwaysontheroad.transportservice.data.model.Transport;
 import com.rb.alwaysontheroad.transportservice.rest.validation.Created;
+import com.rb.alwaysontheroad.transportservice.rest.view.Views;
 import com.rb.alwaysontheroad.transportservice.service.TransportService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
@@ -21,6 +23,7 @@ public class TransportController {
     private final TransportMapper transportMapper;
     private final TransportService transportService;
 
+    @JsonView(value = {Views.Public.class})
     @PostMapping(
             value = ApplicationConstants.BASE_URL_V1,
             consumes = MediaType.APPLICATION_JSON_VALUE,
