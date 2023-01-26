@@ -15,6 +15,6 @@ create table public.transport
 );
 
 alter table public.transport
-    owner to postgres;
+    owner to transport_admin;
 
-create index idx_serial_number on transport (serial_number);
+create index idx_serial_number on public.transport (serial_number);

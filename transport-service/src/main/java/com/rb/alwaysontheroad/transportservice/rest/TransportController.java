@@ -9,6 +9,7 @@ import com.rb.alwaysontheroad.transportservice.rest.validation.Created;
 import com.rb.alwaysontheroad.transportservice.rest.view.Views;
 import com.rb.alwaysontheroad.transportservice.service.TransportService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -22,6 +23,7 @@ public class TransportController {
 
     private final TransportMapper transportMapper;
     private final TransportService transportService;
+    private final RedisTemplate<String, TransportDto> redisTemplate;
 
     @JsonView(value = {Views.Public.class})
     @PostMapping(
@@ -33,6 +35,9 @@ public class TransportController {
         Transport transport = transportMapper.covert(transportDto);
         Transport savedTransport = transportService.create(transport);
         TransportDto savedTransportDto = transportMapper.covert(savedTransport);
+
+        redisTemplate.opsForValue()
+                .set(savedTransportDto.getId().toString(), savedTransportDto);
         return ResponseEntity.ok(savedTransportDto);
     }
 }
