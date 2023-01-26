@@ -1,0 +1,32 @@
+server:
+  port: 9089
+  servlet.encoding:
+    charset: UTF-8
+    force-response: true
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9094
+    template:
+      default-topic: raw-metrics
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+
+logging:
+  config: classpath:log4j2.xml
+
+logbook:
+  include:
+    - /api/**
+  exclude:
+    - /actuator/**
+    - /api/admin/**
+    - /swagger-ui/**
+    - /v3/api-docs/**
+    - /webjars/swagger-ui/**
+  filter.enabled: true
+  secure-filter.enabled: true
+  format.style: json
+  strategy: body-only-if-status-at-least
+  minimum-status: 100

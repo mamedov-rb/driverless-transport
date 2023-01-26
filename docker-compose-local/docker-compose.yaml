@@ -2,7 +2,7 @@ version: '3.7'
 
 networks:
   default:
-    name: online_shop_network
+    name: transport_app_network
     driver: bridge
     ipam:
       config:
@@ -12,7 +12,7 @@ services:
   keycloak:
     user: root
     image: jboss/keycloak:15.0.1
-    container_name: online_shop_keycloak
+    container_name: transport_app_keycloak
     ports:
       - '7070:8080'
     depends_on:
@@ -23,55 +23,85 @@ services:
 
   postgres:
     image: postgres:12-alpine
-    container_name: online_shop_postgres
+    container_name: transport_app_postgres
     volumes:
       - ./postgres/data:/var/lib/postgresql/data
       - ./postgres/init.sql:/docker-entrypoint-initdb.d/init.sql
     ports:
-      - '5432:5432'
+      - '5433:5432'
     env_file:
       - ./postgres/postgres.env
 
   redis:
     image: redis:6.2.6-alpine
-    container_name: online_shop_redis
+    container_name: transport_app_redis
     ports:
       - '6379:6379'
 
-  cassandra:
-    user: 'root'
-    image: bitnami/cassandra:4.0.3
-    container_name: online_shop_casandra
+  zookeeper:
+    image: bitnami/zookeeper:latest
+    container_name: transport_app_zookeeper
     ports:
-      - '9042:9042'
-    volumes:
-      - ./cassandra/data:/bitnami
+      - "2181:2181"
     env_file:
-      - ./cassandra/cassandra.env
+      "./kafka/zookeeper.env"
 
-  rabbitmq-stomp:
-    build: ./rabbitmq/build
-    container_name: online_shop_rabbitmq_stomp
-    volumes:
-      - ./rabbitmq/data:/var/lib/rabbitmq
+  kafka:
+    image: confluentinc/cp-kafka:6.1.9
+    container_name: transport_app_kafka
     ports:
-      - '5672:5672'
-      - '15672:15672'
-      - '61613:61613'
+      - "9094:9094"
     env_file:
-      - ./rabbitmq/rabbitmq.env
+      "./kafka/kafka.env"
+    depends_on:
+      - zookeeper
 
-  discovery:
-    image: steeltoeoss/eureka-server
-    container_name: online_shop_discovery
+  kafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: transport_app_kafka_ui
+    environment:
+      KAFKA_CLUSTERS_0_NAME: local-cluster
+      KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS: transport_app_kafka:9092
+      KAFKA_CLUSTERS_0_ZOOKEEPER: transport_app_zookeeper:2181
+    depends_on:
+      - kafka
     ports:
-      - '8761:8761'
+      - "9100:8080"
 
-  nginx:
-    image: nginx:1.19.10-alpine
-    container_name: online_shop_nginx
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
-      - ./nginx/static/build/:/var/www/html/react:ro
-    ports:
-      - '3000:80'
+#  cassandra:
+#    user: 'root'
+#    image: bitnami/cassandra:4.0.3
+#    container_name: transport_app_casandra
+#    ports:
+#      - '9042:9042'
+#    volumes:
+#      - ./cassandra/data:/bitnami
+#    env_file:
+#      - ./cassandra/cassandra.env
+#
+#  rabbitmq-stomp:
+#    build: ./rabbitmq/build
+#    container_name: chat_app_rabbitmq_stomp
+#    volumes:
+#      - ./rabbitmq/data:/var/lib/rabbitmq
+#    ports:
+#      - '5672:5672'
+#      - '15672:15672'
+#      - '61613:61613'
+#    env_file:
+#      - ./rabbitmq/rabbitmq.env
+#
+#  discovery:
+#    image: steeltoeoss/eureka-server
+#    container_name: transport_app_discovery
+#    ports:
+#      - '8761:8761'
+#
+#  nginx:
+#    image: nginx:1.19.10-alpine
+#    container_name: chat_app_nginx
+#    volumes:
+#      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+#      - ./nginx/static/build/:/var/www/html/react:ro
+#    ports:
+#      - '3000:80'

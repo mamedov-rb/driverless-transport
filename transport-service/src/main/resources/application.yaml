@@ -7,7 +7,7 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    url: jdbc:postgresql://localhost:5432/driverless_transport
+    url: jdbc:postgresql://localhost:5433/transport
     username: postgres
     password: postgres
     type: com.zaxxer.hikari.HikariDataSource

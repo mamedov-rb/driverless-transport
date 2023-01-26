@@ -24,5 +24,8 @@
 /transport-service/.idea/
 /transport-service/build/
 
+/rest-queue-metrics-adapter/.gradle/
+/rest-queue-metrics-adapter/build/
+
 /kubernetes/.idea/
 /docker-compose-local/nginx/static/
