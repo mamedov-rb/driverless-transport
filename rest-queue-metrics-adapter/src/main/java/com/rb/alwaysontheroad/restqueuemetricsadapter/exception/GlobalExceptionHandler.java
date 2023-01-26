@@ -41,6 +41,13 @@ public class GlobalExceptionHandler {
         return buildResponse(errors.toString(), HttpStatus.BAD_REQUEST);
     }
 
+    /* Catch access */
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<ErrorResponse> handleAccessDeniedExceptionException(AccessDeniedException ex) {
+        log.error("Exception has occurred: ", ex);
+        return buildResponse(ex.toString(), HttpStatus.FORBIDDEN);
+    }
+
     /* Catch others */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleOthersException(Exception ex) {

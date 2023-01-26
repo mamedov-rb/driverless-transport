@@ -18,7 +18,7 @@ public class MetricsDto {
 
     @NotNull(groups = {Created.class})
     @JsonView(value = {Views.Public.class})
-    private UUID transport_id;
+    private UUID transportId;
 
     @NotBlank(groups = {Created.class})
     private String payload;
