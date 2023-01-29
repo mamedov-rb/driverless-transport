@@ -1,0 +1,35 @@
+server:
+  port: 9088
+  servlet.encoding:
+    charset: UTF-8
+    force-response: true
+
+spring:
+  kafka:
+    bootstrap-servers: localhost:9094
+    template:
+      default-topic: raw-metrics
+    consumer:
+      client-id: raw-metrics-consumer-01
+      group-id: raw-metrics
+      auto-offset-reset: earliest
+#      key-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+#      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.JsonDeserializer
+      properties:
+        spring.json.trusted.packages: '*'
+#        spring.deserializer.key.delegate.class: org.apache.kafka.common.serialization.StringDeserializer
+#        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+  influxdb:
+    url: http://localhost:8086
+    username: metrics_admin
+    password: 123qwe
+    database: test
+    retention-policy: autogen
+    connect-timeout: 10
+    read-timeout: 30
+    write-timeout: 10
+
+logging:
+  config: classpath:log4j2.xml

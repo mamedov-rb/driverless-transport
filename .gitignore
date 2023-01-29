@@ -11,10 +11,6 @@
 /config-service/gradle/
 /config-service/logs/
 
-/docker-compose-local/rabbitmq/data/
-/docker-compose-local/postgres/data/
-/docker-compose-local/cassandra/data/
-
 /gateway-service/.gradle/
 /gateway-service/build/
 /gateway-service/gradle/
@@ -28,4 +24,14 @@
 /rest-queue-metrics-adapter/build/
 
 /kubernetes/.idea/
+/raw-metrics-consumer/.gradle/
+/raw-metrics-consumer/build/
+
+/docker-compose-local/rabbitmq/data/
+/docker-compose-local/postgres/data/
+/docker-compose-local/cassandra/data/
+/docker-compose-local/influxdb/data/
+/docker-compose-local/redis/data/
 /docker-compose-local/nginx/static/
+/docker-compose-local/kafka/data/
+/docker-compose-local/zookeeper/data/

@@ -9,17 +9,17 @@ networks:
         - subnet: 160.170.100.0/24
 
 services:
-  keycloak:
-    user: root
-    image: jboss/keycloak:15.0.1
-    container_name: transport_app_keycloak
-    ports:
-      - '7070:8080'
-    depends_on:
-      - postgres
-    env_file:
-      - ./keycloak/keycloak.env
-    command: -b 0.0.0.0 -bmanagement 0.0.0.0
+#  keycloak:
+#    user: root
+#    image: jboss/keycloak:15.0.1
+#    container_name: transport_app_keycloak
+#    ports:
+#      - '7070:8080'
+#    depends_on:
+#      - postgres
+#    env_file:
+#      - ./keycloak/keycloak.env
+#    command: -b 0.0.0.0 -bmanagement 0.0.0.0
 
   postgres:
     image: postgres:12-alpine
@@ -33,18 +33,33 @@ services:
       - ./postgres/postgres.env
 
   redis:
-    image: redis:6.2.6-alpine
+    image: redis:7.0.8-alpine
     container_name: transport_app_redis
+    volumes:
+      - ./redis/data:/data
     ports:
       - '6379:6379'
 
+  influxdb:
+    image: influxdb:1.8.10
+    ports:
+      - '8086:8086'
+    volumes:
+      - ./influxdb/data:/var/lib/influxdb
+    environment:
+      - INFLUXDB_DB=metrics
+      - INFLUXDB_ADMIN_USER=metrics_admin
+      - INFLUXDB_ADMIN_PASSWORD=123qwe
+
   zookeeper:
-    image: bitnami/zookeeper:latest
+    image: confluentinc/cp-zookeeper:6.1.9
     container_name: transport_app_zookeeper
     ports:
       - "2181:2181"
     env_file:
       "./kafka/zookeeper.env"
+#    volumes:
+#      - ./zookeeper/data:/var/lib/zookeeper/data
 
   kafka:
     image: confluentinc/cp-kafka:6.1.9
@@ -53,6 +68,8 @@ services:
       - "9094:9094"
     env_file:
       "./kafka/kafka.env"
+#    volumes:
+#      - ./kafka/data:/var/lib/kafka/data
     depends_on:
       - zookeeper
 
